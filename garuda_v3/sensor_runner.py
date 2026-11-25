@@ -28,7 +28,7 @@ from .live_publisher import deliver_pending, read_private_token, validate_endpoi
 from .shadow_agent import ShadowAgent
 
 DEFAULT_ARTIFACTS = "garuda_v3/artifacts/calibrated_host_v6"
-DEFAULT_ENDPOINT = "https://your-render-service.example/api/live/ingest"
+DEFAULT_ENDPOINT = "https://krishna-shadow-telemetry.onrender.com/api/live/ingest"
 MAX_PCAP_BYTES = 256 * 1024 * 1024
 
 

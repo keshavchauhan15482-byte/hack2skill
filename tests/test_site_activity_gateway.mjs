@@ -4,24 +4,24 @@ import {createRequire} from "node:module";
 
 const require=createRequire(import.meta.url);
 const handler=require("../api/site-activity.js");
-const base="https://your-vercel-project.example";
+const base="https://krishna-defence-system.vercel.app";
 function response(){return {code:0,body:null,headers:{},setHeader(k,v){this.headers[k]=v;},
   status(n){this.code=n;return this;},json(x){this.body=x;return this;}};}
 function request(origin=base){return {method:"POST",headers:{
-  origin,host:"your-vercel-project.example","sec-fetch-site":"same-origin",
+  origin,host:"krishna-defence-system.vercel.app","sec-fetch-site":"same-origin",
   "content-length":"0",
 }};}
 
 test("Site request becomes a private metadata-only authenticated event",async()=>{
  const oldFetch=globalThis.fetch, oldUrl=process.env.RENDER_BACKEND_URL,
        oldSecret=process.env.RENDER_ACTIVITY_TOKEN;
- process.env.RENDER_BACKEND_URL="https://your-render-service.example";
+ process.env.RENDER_BACKEND_URL="https://krishna-shadow-telemetry.onrender.com";
  process.env.RENDER_ACTIVITY_TOKEN="A".repeat(48);
  let calls=0;
  try{
   globalThis.fetch=async (url,options)=>{
    calls++;
-   assert.equal(String(url),"https://your-render-service.example/api/site-activity/ingest");
+   assert.equal(String(url),"https://krishna-shadow-telemetry.onrender.com/api/site-activity/ingest");
    assert.equal(options.headers.Authorization,"Bearer "+"A".repeat(48));
    const data=JSON.parse(options.body);
    assert.deepEqual(Object.keys(data).sort(),["kind","request_uuid","schema"]);

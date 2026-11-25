@@ -172,7 +172,7 @@ class RelayHandler(BaseHTTPRequestHandler):
             '<p>Original trained model runs only on an authorized capture sensor. '
             'This relay does not expose packet contents, prediction inference, or '
             'automatic blocking.</p>'
-            '<p><a href="https://your-vercel-project.example/">'
+            '<p><a href="https://krishna-defence-system.vercel.app/">'
             'Open Krishna Defence dashboard</a></p>'
             '<small>Read-only health: /health · Sensor and viewer routes require authentication.</small>'
             '</main></body></html>'

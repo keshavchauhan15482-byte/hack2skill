@@ -17,7 +17,7 @@ The public site may have **Vercel Firewall** protections at the edge, if separat
 
 ## Non-destructive browser test
 
-Open \`https://your-vercel-project.example/#lab\`, select **Run 5 safe HTTP tests**. These real browser requests target a dummy-only endpoint with a total budget of five requests per click. Tests are expected to return:
+Open \`https://krishna-defence-system.vercel.app/#lab\`, select **Run 5 safe HTTP tests**. These real browser requests target a dummy-only endpoint with a total budget of five requests per click. Tests are expected to return:
 
 | Request record value | Expected HTTP | Lane |
 | --- | --- | --- |

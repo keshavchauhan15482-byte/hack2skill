@@ -6,7 +6,7 @@ The AIT research branch remains separate; its failed risk gates are not promoted
 
 ## Profiles
 
-`GARUDA_DEPLOYMENT_PROFILE=local` preserves the offline PROJECT console. The console
+`GARUDA_DEPLOYMENT_PROFILE=local` preserves the offline SIH console. The console
 bridge is a trusted-local demonstration surface, not a public authenticated app.
 Do not expose or tunnel it publicly. All runtime listeners now reject non-loopback
 bind addresses, including wildcard binds. This is defense in depth, not protection

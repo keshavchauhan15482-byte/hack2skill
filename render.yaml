@@ -1,8 +1,8 @@
 # Garuda real-observation relay (no public packet/model inference).
-# Uses the separate existing hack2skill-live-telemetry PostgreSQL instance.
+# Uses the separate existing krishna-live-telemetry PostgreSQL instance.
 services:
   - type: web
-    name: hack2skill-shadow-telemetry
+    name: krishna-shadow-telemetry
     runtime: python
     plan: free
     region: singapore
@@ -19,5 +19,5 @@ services:
         generateValue: true
       - key: DATABASE_URL
         fromDatabase:
-          name: hack2skill-live-telemetry
+          name: krishna-live-telemetry
           property: connectionString

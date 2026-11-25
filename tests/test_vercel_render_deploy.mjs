@@ -69,7 +69,10 @@ test("Static premium Vercel build preserves the original console and labels unav
   assert.ok(css.includes('hosted-lab-steps'));
   assert.ok(css.includes('hosted-demo-selected'));
   assert.ok(hosted.includes('recordFirstPartyPageRequest()'));
-  assert.ok(hosted.includes('addSensorActivationPanel()'));
+  assert.ok(hosted.includes('addCloudMonitoringPanel()'));
+  assert.ok(hosted.includes('cloud-recent'));
+  assert.ok(hosted.includes('cloud-prior'));
+  assert.equal(hosted.includes('addSensorActivationPanel()'),false);
   assert.ok(hosted.includes('addOperationalHeartbeatPanel()'));
   assert.ok(hosted.includes('LIVE OPERATIONAL TELEMETRY'));
   assert.ok(hosted.includes('ops-heartbeat-age'));
@@ -91,8 +94,9 @@ test("Static premium Vercel build preserves the original console and labels unav
   assert.ok(js.includes('krishna:forecast-received'));
   assert.ok(js.includes("series.length-1"));
   assert.ok(hosted.includes('krishna:sensor-status'));
-  assert.ok(hosted.includes('No genuine forecast received'));
-  assert.ok(hosted.includes('Copy Mac command'));
+  assert.ok(hosted.includes('without a supported capture there is no fresh packet forecast'));
+  assert.equal(hosted.includes('Copy Mac command'),false);
+  assert.equal(hosted.includes('scripts/start-garuda-sensor-macos.sh'),false);
   assert.equal(hosted.includes('Bearer '),false);
   assert.ok(js.includes("krishna:sensor-status"));
   assert.ok(hosted.includes('ACTUAL WEBSITE HTTP ACTIVITY'));
@@ -132,11 +136,11 @@ test("Vercel serverless API never needs browser sensor secrets and sanitizes eve
         sensor_status:{state:"capturing",capture_seconds:600,
           sensor_age_seconds:12,model_sha256:"private-checkpoint"},
         site_activity:{source:"first_party_page_requests",
-          total_requests:8,requests_24h:3,last_request_at:1760000000,
+          total_requests:8,requests_24h:3,requests_5m:2,requests_previous_5m:1,last_request_at:1760000000,
           email:"should-not-be-exposed",is_model_input:false},
         events:[{
-          id:5,kind:"forecast",capture_sha256:"sensitive-hash",
-          trajectory:[10,20,30,40].map(x=>({horizon_seconds:x,malicious_flow_probability:.2})),
+          id:5,kind:"forecast",capture_sha256:"sensitive-hash",cutoff_epoch_seconds:1760000000,
+          trajectory:[10,20,30,40].map(x=>({horizon_seconds:x,malicious_flow_probability:.2,private_metadata:"not-public"})),
           score:20,alert:false,supported:false,
           automatic_containment:false,
         }]
@@ -147,8 +151,11 @@ test("Vercel serverless API never needs browser sensor secrets and sanitizes eve
     assert.equal(res.code,200);
     assert.equal(res.body.events.length,1);
     assert.equal(res.body.events[0].capture_sha256,undefined);
+    assert.deepEqual(res.body.events[0].trajectory[0],{horizon_seconds:10,malicious_flow_probability:.2});
     assert.equal(res.body.events[0].automatic_containment,false);
     assert.equal(res.body.site_activity.total_requests,8);
+    assert.equal(res.body.site_activity.requests_5m,2);
+    assert.equal(res.body.site_activity.requests_previous_5m,1);
     assert.equal(res.body.site_activity.email,undefined);
     assert.equal(res.body.site_activity.is_model_input,false);
     assert.equal(requestCount,1);
@@ -172,4 +179,25 @@ test("Vercel serverless API never needs browser sensor secrets and sanitizes eve
     if(oldToken===undefined)delete process.env.RENDER_VIEWER_TOKEN;
     else process.env.RENDER_VIEWER_TOKEN=oldToken;
   }
+});
+
+test("Malformed upstream forecast fails closed",async()=>{
+ const oldFetch=globalThis.fetch,oldBase=process.env.RENDER_BACKEND_URL,oldToken=process.env.RENDER_VIEWER_TOKEN;
+ process.env.RENDER_BACKEND_URL="https://krishna-relay.onrender.com";process.env.RENDER_VIEWER_TOKEN="v".repeat(40);
+ try{
+  const event={id:1,cutoff_epoch_seconds:1760000000,score:20,automatic_containment:false,
+    trajectory:[10,20,30,40].map(x=>({horizon_seconds:x,malicious_flow_probability:.2}))};
+  const activity={source:"first_party_page_requests",total_requests:0,requests_24h:0,last_request_at:null};
+  for(const invalid of [{...event,score:101},{...event,cutoff_epoch_seconds:"bad"},
+    {...event,trajectory:[10,20,30,240].map(x=>({horizon_seconds:x,malicious_flow_probability:.2}))},
+    {...event,trajectory:[10,20,30,40].map(x=>({horizon_seconds:x,malicious_flow_probability:1.1}))}]){
+   globalThis.fetch=async()=>new Response(JSON.stringify({state:"near_live",cursor:1,events:[invalid],site_activity:activity}));
+   const res=mockResponse();await handler({method:"GET",query:{after:"0"}},res);
+   assert.equal(res.code,503);assert.equal(res.body.events,undefined);
+  }
+ }finally{
+  globalThis.fetch=oldFetch;
+  if(oldBase===undefined)delete process.env.RENDER_BACKEND_URL;else process.env.RENDER_BACKEND_URL=oldBase;
+  if(oldToken===undefined)delete process.env.RENDER_VIEWER_TOKEN;else process.env.RENDER_VIEWER_TOKEN=oldToken;
+ }
 });

@@ -36,11 +36,11 @@ Do NOT change the private `garuda_v3.integrated_server` listener from
 
 ## 1. Deploy Render relay (first)
 
-1. First confirm the existing Render PostgreSQL database named `hack2skill-live-telemetry` is available in the same workspace and Singapore region. Do **not** create a second database.
+1. First confirm the existing Render PostgreSQL database named `krishna-live-telemetry` is available in the same workspace and Singapore region. Do **not** create a second database.
 2. In Render create a **Blueprint** from
-   `keshavchauhan15482-byte/hack2skill` on `main` using root
+   `keshavchauhan15482-byte/defencekrishna` on `main` using root
    `render.yaml`. This creates the Python web service
-   `hack2skill-shadow-telemetry`. The `/health` endpoint should respond with
+   `krishna-shadow-telemetry`. The `/health` endpoint should respond with
    `{"status":"ready","service":"advisory_telemetry_relay"}`.
 3. Set two **different**, randomly generated 40+ character secrets when
    prompted by Render Blueprint:
@@ -57,7 +57,7 @@ Health checking does not establish live data: before a sensor publishes, the
 feed is `waiting`.
 
 The Render relay now REQUIRES `DATABASE_URL` from the **separate** existing
-`hack2skill-live-telemetry` PostgreSQL resource. It creates only its own
+`krishna-live-telemetry` PostgreSQL resource. It creates only its own
 `krishna_live_forecasts` table and never edits trained model weights, recorded
 datasets, training labels, or inference checkpoints. Forecast metadata
 persists across web-service restarts. The web API reads at most 128 rows per
@@ -75,7 +75,7 @@ adequate hosting, observability and independent review.
 ## 2. Deploy Vercel frontend
 
 1. From Vercel, **Import Git Repository**
-   `keshavchauhan15482-byte/hack2skill`, branch `main`.
+   `keshavchauhan15482-byte/defencekrishna`, branch `main`.
 2. Root Directory: repository root `./`. Framework preset: **Other**.
    The committed root `vercel.json` builds the EXISTING `console.html` into
    `public/`, injects the approved V131/V132 style/JS assets and serves it

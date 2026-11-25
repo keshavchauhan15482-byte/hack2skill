@@ -7,14 +7,14 @@
 Run in macOS Terminal on your **own/authorized network**:
 
 ~~~bash
-git clone https://github.com/keshavchauhan15482-byte/hack2skill.git
-cd hack2skill
+git clone https://github.com/keshavchauhan15482-byte/defencekrishna.git
+cd defencekrishna
 bash scripts/start-garuda-sensor-macos.sh
 ~~~
 
 If you already have the repository, run `git pull --ff-only` instead of cloning. The script suggests this Mac's default interface from `route -n get default`, verifies it exists, and **requires you to type `AUTHORIZED`** before any capture starts. To choose a different interface explicitly, pass its name (for example `en0`); only inspect networks you own or have explicit permission to monitor. Python 3.12+ and macOS's built-in tcpdump are required. The script creates its own environment and installs pinned NumPy; it does not modify training data.
 
-The local shell first asks you to confirm lawful ownership/authorization; there is no silent or remote packet capture. The first time, the Python sensor privately asks for Render `GARUDA_LIVE_SENSOR_TOKEN`. Obtain it in the **hack2skill-shadow-telemetry** Render service Environment Settings; do not use `RENDER_VIEWER_TOKEN` or `RENDER_ACTIVITY_TOKEN`. Do NOT share/paste credentials in chat or GitHub. This token is stored only in an ignored private local file with file mode 0600. The Mac will ask for an OS `sudo` permission to capture packets. Garuda inference itself runs as your normal user.
+The local shell first asks you to confirm lawful ownership/authorization; there is no silent or remote packet capture. The first time, the Python sensor privately asks for Render `GARUDA_LIVE_SENSOR_TOKEN`. Obtain it in the **krishna-shadow-telemetry** Render service Environment Settings; do not use `RENDER_VIEWER_TOKEN` or `RENDER_ACTIVITY_TOKEN`. Do NOT share/paste credentials in chat or GitHub. This token is stored only in an ignored private local file with file mode 0600. The Mac will ask for an OS `sudo` permission to capture packets. Garuda inference itself runs as your normal user.
 
 To run one capture then stop, instead use:
 
@@ -37,13 +37,13 @@ Each bounded **600-second** real capture:
 
 Separate data lanes stay unchanged: original immutable training data + model checkpoint; newly collected Garuda forecast data; anonymous website page-request counters `krishna_site_activity_events`. No retraining or weight changes occur automatically.
 
-## If you downloaded the ZIP (folder `hack2skill-main`)
+## If you downloaded the ZIP (folder `defencekrishna-main`)
 
-ZIP downloads do **not** contain a `.git` directory, so `git pull` will not work in this folder. After the fix lands on `main`, use these two commands from inside your existing `hack2skill-main` folder to update only the sensor runner and its macOS launcher, **without deleting local secret files or training data**:
+ZIP downloads do **not** contain a `.git` directory, so `git pull` will not work in this folder. After the fix lands on `main`, use these two commands from inside your existing `defencekrishna-main` folder to update only the sensor runner and its macOS launcher, **without deleting local secret files or training data**:
 
 ~~~bash
-curl -fLsS --output garuda_v3/sensor_runner.py https://raw.githubusercontent.com/keshavchauhan15482-byte/hack2skill/main/garuda_v3/sensor_runner.py
-curl -fLsS --output scripts/start-garuda-sensor-macos.sh https://raw.githubusercontent.com/keshavchauhan15482-byte/hack2skill/main/scripts/start-garuda-sensor-macos.sh
+curl -fLsS --output garuda_v3/sensor_runner.py https://raw.githubusercontent.com/keshavchauhan15482-byte/defencekrishna/main/garuda_v3/sensor_runner.py
+curl -fLsS --output scripts/start-garuda-sensor-macos.sh https://raw.githubusercontent.com/keshavchauhan15482-byte/defencekrishna/main/scripts/start-garuda-sensor-macos.sh
 bash scripts/start-garuda-sensor-macos.sh
 ~~~
 
