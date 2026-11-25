@@ -1,3 +1,21 @@
+# Krishna Security Decision Assistant — PromptWars prototype
+
+**Proposed vertical:** cybersecurity assistance for students, small-business owners and IT administrators. The exact organizer-provided vertical has not yet been confirmed; do not represent this choice as an official challenge category.
+
+## User problem and logic
+People facing suspicious messages, account concerns or website disruption need safe, understandable next steps matched to their situation. The assistant uses four explicit inputs: persona, scenario, reported evidence and available support. The decision engine gives a priority, ordered actions, and a reason for every action; changes in context change the output. No user data is transmitted or persisted. No automated containment, external AI model, or live attack diagnosis is claimed.
+
+## Run
+`python3 -m http.server 8000 --directory promptwars` then open http://localhost:8000/. The app is dependency-free. `node --test promptwars/decision-engine.test.cjs` checks all 90 combinations, invalid inputs, and context sensitivity.
+
+## Accessibility
+Semantic landmarks, skip link, labeled native controls, keyboard focus indicators, live status, responsive layout, reduced-motion support and text-based priorities. Automated WCAG conformance is not claimed.
+
+## Assumptions
+Users report their own evidence; priority is not a calibrated threat score. Actions are advisory and restricted to authorized systems. The separate existing cybersecurity research project is retained below as supporting context; its deployed dashboard is not the same as the new assistant.
+
+---
+
 # Krishna Defence System — lightweight submission
 
 Live demo: https://krishna-defence-system.vercel.app/
