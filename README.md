@@ -8,6 +8,9 @@ People facing suspicious messages, account concerns or website disruption need s
 ## Run
 `python3 -m http.server 8000 --directory promptwars` then open http://localhost:8000/. The app is dependency-free. `node --test promptwars/decision-engine.test.cjs` checks all 90 combinations, invalid inputs, and context sensitivity.
 
+## Challenge requirements and evidence
+See [requirement-to-feature mapping and review checklist](promptwars/REVIEW.md). Sample personas, live context changes, explained priorities, follow-up guidance and downloadable plans are available from the assistant UI.
+
 ## Accessibility
 Semantic landmarks, skip link, labeled native controls, keyboard focus indicators, live status, responsive layout, reduced-motion support and text-based priorities. Automated WCAG conformance is not claimed.
 
